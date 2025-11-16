@@ -43,8 +43,32 @@ const getDomos = async (req, res) => {
   }
 }
 
+const removeDomo = async (req, res) => {
+  if (!req.body.name) {
+    return res.status(400).json({ error: 'Domo name is required to delete!' });
+  }
+
+  try {
+    const query = {
+      name: req.body.name,
+      owner: req.session.account._id,
+    };
+    const deletedDomo = await Domo.findOneAndDelete(query).exec();
+
+    if (!deletedDomo) {
+      return res.status(404).json({ error: 'Domo not found!' });
+    }
+
+    return res.status(200).json({ message: 'Domo deleted successfully!' });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({ error: 'An error occurred while deleting the domo!' });
+  }
+};
+
 module.exports = {
   makerPage,
   makeDomo,
   getDomos,
+  removeDomo,
 };

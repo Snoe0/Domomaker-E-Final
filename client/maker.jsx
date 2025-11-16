@@ -20,6 +20,18 @@ const handleDomo = (e, onDomoAdded) => {
   return false;
 };
 
+const handleRemoveDomo = (name, onDomoRemoved) => {
+  helper.hideError();
+
+  if (!name) {
+    helper.handleError('Domo name is required to delete!');
+    return false;
+  }
+
+  helper.sendPost('/removeDomo', { name }, onDomoRemoved);
+  return false;
+};
+
 const DomoForm = (props) => {
   return (
     <form id="domoForm"
@@ -29,13 +41,13 @@ const DomoForm = (props) => {
       method="POST"
       className="domoForm"
     >
-      <label htmlFor="name">Name: </label>
+      <label htmlFor="domoName">Name: </label>
       <input id="domoName" type="text" name="name" placeholder="Domo Name" />
-      <label htmlFor="age">Age: </label>
-      <input id="domoAge" type="number" min="0" name="age" />
-      <label htmlFor="height">Height: </label>
-      <input id="domoFeet" type="number" name="height" min="0" />
-      <input id="domoInches" type="number" name="height" min="0" max="11" />
+      <label htmlFor="domoAge">Age: </label>
+      <input id="domoAge" type="number" min="0" name="age" placeholder="Age" />
+      <label htmlFor="domoFeet">Height: </label>
+      <input id="domoFeet" type="number" name="height" min="0" placeholder="Feet" />
+      <input id="domoInches" type="number" name="height2" min="0" max="11" placeholder="Inches" />
       <input className="makeDomoSubmit" type="submit" value="Make Domo" />
     </form>
   );
@@ -66,8 +78,11 @@ const DomoList = (props) => {
       <div key={domo.id} className="domo">
         <img src="/assets/img/domoface.jpeg" alt="domo face" className="domoFace" />
         <h3 className="domoName">Name: {domo.name}</h3>
-        <h3 className="domoAge">Age: {domo.age}</h3>
+        <img
+          src="/assets/img/trash.png" alt="delete domo" className="domoDelete"  onClick={() => handleRemoveDomo(domo.name, props.triggerReload)}
+        />
         <h3 className="domoHeight">Height: {domo.height}</h3>
+        <h3 className="domoAge">Age: {domo.age}</h3>
       </div>
     );
   });
@@ -88,7 +103,7 @@ const App = () => {
         <DomoForm triggerReload={() => setReloadDomos(!reloadDomos)} />
       </div>
       <div id="domos">
-        <DomoList domos={[]} reloadDomos={reloadDomos} />
+        <DomoList domos={[]} reloadDomos={reloadDomos} triggerReload={() => setReloadDomos(!reloadDomos)} />
         </div>
     </div>
   );
