@@ -2,9 +2,7 @@ const models = require('../models');
 
 const { Domo } = models;
 
-const makerPage = (req, res) => {
-  return res.render('app');
-};
+const makerPage = (req, res) => res.render('app');
 
 const makeDomo = async (req, res) => {
   if (!req.body.name || !req.body.age) {
@@ -33,7 +31,7 @@ const makeDomo = async (req, res) => {
 
 const getDomos = async (req, res) => {
   try {
-    const query = {owner: req.session.account._id};
+    const query = { owner: req.session.account._id };
     const docs = await Domo.find(query).select('name age height').lean().exec();
 
     return res.json({ domos: docs });
@@ -41,7 +39,7 @@ const getDomos = async (req, res) => {
     console.log(err);
     return res.status(500).json({ error: 'Error retrieving domos!' });
   }
-}
+};
 
 const removeDomo = async (req, res) => {
   if (!req.body.name) {
