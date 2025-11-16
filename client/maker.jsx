@@ -56,7 +56,7 @@ const DomoForm = (props) => {
 const DomoList = (props) => {
   const [domos, setDomos] = useState(props.domos);
 
-  useEffect(() => {
+  useEffect(() => { 
     const loadDomosFromServer = async () => {
       const response = await fetch('/getDomos');
       const data = await response.json();
