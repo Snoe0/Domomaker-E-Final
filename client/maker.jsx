@@ -9,7 +9,7 @@ const handleDomo = (e, onDomoAdded) => {
 
   const name = e.target.querySelector('#domoName').value;
   const age = e.target.querySelector('#domoAge').value;
-  const height = `${e.target.querySelector('#domoFeet').value}'${e.target.querySelector('#domoInches').value}"`;
+  const height = e.target.querySelector('#domoFeet').value ? `${e.target.querySelector('#domoFeet').value}'${e.target.querySelector('#domoInches').value}"` : "N/A";
 
   if (!name || !age) {
     helper.handleError('Name and age are required');
